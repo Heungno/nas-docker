@@ -1,10 +1,20 @@
 # docker로 code-server 만들기
 
+## 구조
+
+```
+- docker
+|- env
+|- nginx
+|   |-conf.d
+|   |-logs
+|- certbot
+|- code-server
+```
+
 ## nginx 설정
 
-> nginx/conf.d/default.conf
-
-```conf
+```c
 # nginx/conf.d/default.conf
 server {
     listen 80;
@@ -77,7 +87,7 @@ certbot:
 
 - ssl 인증서 생성하기
 
-  `env> docker-com기ose up certbot`
+  `env> docker-compose up certbot`
 
 ## nginx ssl 설정
 
@@ -103,7 +113,7 @@ resolver_timeout 10s;
 
 ## code-server 컨테이너생성
 
-```conf
+```c
 #nginx/code-server.conf
 server {
     listen 443 ssl http2;
