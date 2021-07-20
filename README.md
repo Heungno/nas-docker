@@ -94,7 +94,7 @@ add_header Content-Security-Policy "default-src * data: 'unsafe-eval' 'unsafe-in
 # enable strict transport security only if you understand the implications
 ssl_stapling on;
 ssl_stapling_verify on;
-resolver 8.8.8.8 8.8.4.4 valid=300s경
+resolver 8.8.8.8 8.8.4.4 valid=300s;
 resolver_timeout 10s;
 
 ```
