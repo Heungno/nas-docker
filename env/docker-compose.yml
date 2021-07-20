@@ -1,0 +1,53 @@
+version: "3"
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    hostname: "nginx"
+    environment:
+      - TZ=Asia/Seoul
+      - LANG=ko_KR.UTF-8
+      - LANGUAGE=ko_KR.UTF-8
+    volumes:
+      - ../nginx/nginx.conf:/etc/nginx/nginx.conf:rw
+      - ../nginx/conf.d:/etc/nginx/conf.d:rw
+      - ../nginx/logs:/var/log/nginx:rw
+      - ../code-server/config/workspace/nginx/html:/home/nginx/html:rw
+      - ../certbot/data:/var/www/certbot
+      - ../certbot/conf:/etc/nginx/ssl
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+
+  code-server:
+    image: linuxserver/code-server
+    container_name: code-server
+    hostname: "code-server"
+    environment:
+      - PUID=1000
+      - PGID=100
+      - TZ=Asia/Seoul
+      - LANG=ko_KR.UTF-8
+      - LANGUAGE=ko_KR.UTF-8
+      - PASSWORD={{password}}#option
+      - SUDO_PASSWORD={{password}}#option
+    working_dir: /home/workspace
+    volumes:
+      - ../code-server/config:/config
+    ports:
+      #      - 8443:8443
+      - 3009:5500
+      - 3000-3003:3000-3003
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot
+    command: certonly --webroot --webroot-path=/var/www/certbot --email {{email}} --agree-tos --no-eff-email -d {{domain.com}} -d {{sub.domain.com}}
+    volumes:
+      - ../certbot/conf:/etc/letsencrypt
+      - ../certbot/logs:/var/log/letsencrypt
+      - ../certbot/data:/var/www/certbot
