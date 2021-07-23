@@ -5,4 +5,3 @@ docker run -it --rm --name certbot \
 -v '/share/homes/docker/certbot/logs:/var/log/letsencrypt' \
 -v '/share/homes/docker/certbot/data:/var/www/certbot' \
 certbot/certbot certificates
-
